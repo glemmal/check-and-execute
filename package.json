@@ -1,0 +1,44 @@
+{
+  "name": "check-and-execute",
+  "version": "1.0.0",
+  "description": "Execute given functions when a given selector exists inside of the DOM.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/glemmal/check-and-execute.git"
+  },
+  "keywords": [
+    "DOM",
+    "check",
+    "load",
+    "js",
+    "loader",
+    "execute"
+  ],
+  "author": "glemmal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/glemmal/check-and-execute/issues"
+  },
+  "babel": {
+    "presets": [
+      [
+        "babel-preset-env",
+        {
+          "targets": {
+            "browsers": "last 2 versions, ie 6-11"
+          }
+        }
+      ]
+    ]
+  },
+  "homepage": "https://github.com/glemmal/check-and-execute#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
