@@ -1,5 +1,5 @@
-# Check and Execute by DOM Selector
-Execute given functions when a given selector exists inside of the DOM.
+# Check and Execute
+Execute given functions when a given query selector exists inside the DOM.
 
 ## Install
 ```bash
