@@ -37,7 +37,7 @@ function isValidInput(execute, check) {
 function create() {
   var _modules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-  [].concat(_toConsumableArray(modules), [_modules]).reduce(function (mem, val) {
+  [].concat(_toConsumableArray(modules), _toConsumableArray(_modules)).reduce(function (mem, val) {
     return (
       // accept also module definition as array with submodules
       val.constructor === Array ? [].concat(_toConsumableArray(mem), _toConsumableArray(val)) : [].concat(_toConsumableArray(mem), [val])
