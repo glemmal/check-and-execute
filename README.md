@@ -24,11 +24,12 @@ You use the "use" function in order to add a handler to the execution chain:
  checkAndExecute();
 ```
 
-You can also add all modules you wanna load to the constructor:
+You can also add all modules you want to load directly into the constructor:
 
 ```javascript
 import checkAndExecute from 'check-and-execute';
 
+// either array of Objects with check and execute attribute
 checkAndExecute([
   {
     // Also takes a string
@@ -37,6 +38,27 @@ checkAndExecute([
       console.log('load me when class .example is available');
     }
   }
+]);
+
+// or array with sub array of Objects with check and execute attribute
+// sometimes useful when you want to do several separate checks in a module
+checkAndExecute([
+  [
+    {
+      // Also takes a string
+      check: '.example',
+      execute () {
+        console.log('load me when class .example is available');
+      }
+    },
+    {
+      // Also takes a string
+      check: '.example-two',
+      execute () {
+        console.log('load me when class .example-two is available');
+      }
+    },
+  ]
 ]);
 ```
 ## MIT License
