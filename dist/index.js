@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -11,7 +11,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var modules = [];
 
 function use(handler, checks) {
-  if (checks.constructor !== Array) {
+  isValidInput(handler, checks);
+
+  if (checks.constructor === String) {
     checks = [checks];
   }
 
@@ -20,10 +22,28 @@ function use(handler, checks) {
   })), [{ handler: handler, checks: checks }]);
 }
 
+function isValidInput(handler, checks) {
+  if (checks.constructor !== String && checks.constructor !== Array) {
+    throw new Error('check-and-execute accepts only array and string as check');
+  }
+
+  if (handler.constructor !== Function) {
+    throw new Error('check-and-execute accepts only functions as handlers');
+  }
+}
+
 function create() {
   var _modules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-  _modules || modules.reduce(function (mem, val) {
+  modules = [].concat(_toConsumableArray(modules), [_modules]);
+
+  modules.forEach(function (_ref) {
+    var handler = _ref.handler,
+        checks = _ref.checks;
+    return isValidInput(handler, checks);
+  });
+
+  modules.reduce(function (mem, val) {
     return mem.concat(val);
   }, []).forEach(function (usedModule) {
     // check selectors are all available

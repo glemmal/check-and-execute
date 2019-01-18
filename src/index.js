@@ -1,7 +1,9 @@
 let modules = [];
 
 export function use (handler, checks) {
-  if (checks.constructor !== Array) {
+  isValidInput(handler, checks);
+
+  if (checks.constructor === String) {
     checks = [checks];
   }
 
@@ -11,8 +13,25 @@ export function use (handler, checks) {
   ];
 }
 
+function isValidInput (handler, checks) {
+  if (checks.constructor !== String && checks.constructor !== Array) {
+    throw new Error('check-and-execute accepts only array and string as check');
+  }
+
+  if (handler.constructor !== Function) {
+    throw new Error('check-and-execute accepts only functions as handlers');
+  }
+}
+
 export default function create (_modules = []) {
-  _modules || modules
+  modules = [
+    ...modules,
+    _modules
+  ];
+
+  modules.forEach(({ handler, checks }) => isValidInput(handler, checks));
+
+  modules
     .reduce((mem, val) => mem.concat(val), [])
     .forEach((usedModule) => {
       // check selectors are all available
