@@ -26,24 +26,23 @@ function isValidInput (execute, check) {
 }
 
 export default function create (_modules = []) {
-  modules = [
-    ...modules,
-    _modules
-  ];
+  [...modules, _modules]
+    .reduce((mem, val) => (
+      // accept also module definition as array with submodules
+      val.constructor === Array ? [...mem, ...val] : [...mem, val]
+    ), [])
+    .forEach(({ execute, check }) => {
+      // check if module is valid
+      isValidInput(execute, check);
 
-  modules.forEach(({ execute, check }) => isValidInput(execute, check));
-
-  modules
-    .reduce((mem, val) => mem.concat(val), [])
-    .forEach((usedModule) => {
       // check selectors are all available
-      const selectorCheck = (usedModule.check || [])
-        .map(check => document.querySelector(check))
+      const shouldExecute = (check || [])
+        .map(c => document.querySelector(c))
         .find(el => !el) !== null;
 
       // call execute
-      if (selectorCheck && usedModule.execute) {
-        usedModule.execute();
+      if (shouldExecute && execute) {
+        execute();
       }
   });
 }
