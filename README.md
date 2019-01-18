@@ -1,6 +1,11 @@
 # Check and Execute by DOM Selector
 Execute given functions when a given selector exists inside of the DOM.
 
+## Install
+```bash
+npm i check-and-execute --save
+```
+
 ## Usage
 You use the "use" function in order to add a handler to the execution chain:
 
