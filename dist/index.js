@@ -10,25 +10,25 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var modules = [];
 
-function use(handler, checks) {
-  isValidInput(handler, checks);
+function use(execute, check) {
+  isValidInput(execute, check);
 
-  if (checks.constructor === String) {
-    checks = [checks];
+  if (check.constructor === String) {
+    check = [check];
   }
 
   modules = [].concat(_toConsumableArray(modules.filter(function (m) {
-    return m.handler !== handler;
-  })), [{ handler: handler, checks: checks }]);
+    return m.execute !== execute;
+  })), [{ execute: execute, check: check }]);
 }
 
-function isValidInput(handler, checks) {
-  if (checks.constructor !== String && checks.constructor !== Array) {
+function isValidInput(execute, check) {
+  if (!check || check.constructor !== String && check.constructor !== Array) {
     throw new Error('check-and-execute accepts only array and string as check');
   }
 
-  if (handler.constructor !== Function) {
-    throw new Error('check-and-execute accepts only functions as handlers');
+  if (!execute || execute.constructor !== Function) {
+    throw new Error('check-and-execute accepts only functions as executes');
   }
 }
 
@@ -38,24 +38,24 @@ function create() {
   modules = [].concat(_toConsumableArray(modules), [_modules]);
 
   modules.forEach(function (_ref) {
-    var handler = _ref.handler,
-        checks = _ref.checks;
-    return isValidInput(handler, checks);
+    var execute = _ref.execute,
+        check = _ref.check;
+    return isValidInput(execute, check);
   });
 
   modules.reduce(function (mem, val) {
     return mem.concat(val);
   }, []).forEach(function (usedModule) {
     // check selectors are all available
-    var selectorCheck = (usedModule.checks || []).map(function (check) {
+    var selectorCheck = (usedModule.check || []).map(function (check) {
       return document.querySelector(check);
     }).find(function (el) {
       return !el;
     }) !== null;
 
-    // call handler
-    if (selectorCheck && usedModule.handler) {
-      usedModule.handler();
+    // call execute
+    if (selectorCheck && usedModule.execute) {
+      usedModule.execute();
     }
   });
 }
