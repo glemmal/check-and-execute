@@ -1,25 +1,25 @@
 let modules = [];
 
-export function use (handler, check) {
-  isValidInput(handler, check);
+export function use (execute, check) {
+  isValidInput(execute, check);
 
   if (check.constructor === String) {
     check = [check];
   }
 
   modules = [
-    ...modules.filter(m => m.handler !== handler),
-    { handler, check }
+    ...modules.filter(m => m.execute !== execute),
+    { execute, check }
   ];
 }
 
-function isValidInput (handler, check) {
-  if (check.constructor !== String && check.constructor !== Array) {
+function isValidInput (execute, check) {
+  if (!check || check.constructor !== String && check.constructor !== Array) {
     throw new Error('check-and-execute accepts only array and string as check');
   }
 
-  if (handler.constructor !== Function) {
-    throw new Error('check-and-execute accepts only functions as handlers');
+  if (!execute || execute.constructor !== Function) {
+    throw new Error('check-and-execute accepts only functions as executes');
   }
 }
 
@@ -29,7 +29,7 @@ export default function create (_modules = []) {
     _modules
   ];
 
-  modules.forEach(({ handler, check }) => isValidInput(handler, check));
+  modules.forEach(({ execute, check }) => isValidInput(execute, check));
 
   modules
     .reduce((mem, val) => mem.concat(val), [])
@@ -39,7 +39,7 @@ export default function create (_modules = []) {
         .map(check => document.querySelector(check))
         .find(el => !el) !== null;
 
-      // call handler
+      // call execute
       if (selectorCheck && usedModule.execute) {
         usedModule.execute();
       }
