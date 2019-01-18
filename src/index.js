@@ -1,20 +1,20 @@
 let modules = [];
 
-export function use (handler, checks) {
-  isValidInput(handler, checks);
+export function use (handler, check) {
+  isValidInput(handler, check);
 
-  if (checks.constructor === String) {
-    checks = [checks];
+  if (check.constructor === String) {
+    check = [check];
   }
 
   modules = [
     ...modules.filter(m => m.handler !== handler),
-    { handler, checks }
+    { handler, check }
   ];
 }
 
-function isValidInput (handler, checks) {
-  if (checks.constructor !== String && checks.constructor !== Array) {
+function isValidInput (handler, check) {
+  if (check.constructor !== String && check.constructor !== Array) {
     throw new Error('check-and-execute accepts only array and string as check');
   }
 
@@ -29,19 +29,19 @@ export default function create (_modules = []) {
     _modules
   ];
 
-  modules.forEach(({ handler, checks }) => isValidInput(handler, checks));
+  modules.forEach(({ handler, check }) => isValidInput(handler, check));
 
   modules
     .reduce((mem, val) => mem.concat(val), [])
     .forEach((usedModule) => {
       // check selectors are all available
-      const selectorCheck = (usedModule.checks || [])
+      const selectorCheck = (usedModule.check || [])
         .map(check => document.querySelector(check))
         .find(el => !el) !== null;
 
       // call handler
-      if (selectorCheck && usedModule.handler) {
-        usedModule.handler();
+      if (selectorCheck && usedModule.execute) {
+        usedModule.execute();
       }
   });
 }

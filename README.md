@@ -8,13 +8,13 @@ You use the "use" function in order to add a handler to the execution chain:
  import checkAndExecute from 'check-and-execute';
 
  // accepts Array of selectors or String
- const checks = ['.example', '.example-two'];
+ const check = ['.example', '.example-two'];
 
  function execute () {
    console.log('load me when class .example and .example-two is available');
  }
 
- checkAndExecute.use(checks, execute);
+ checkAndExecute.use(check, execute);
 
  checkAndExecute();
 ```
@@ -26,7 +26,8 @@ import checkAndExecute from 'check-and-execute';
 
 checkAndExecute([
   {
-    checks: '.example',
+    // Also takes a string
+    check: '.example',
     execute () {
       console.log('load me when class .example is available');
     }
