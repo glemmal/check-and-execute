@@ -15,13 +15,13 @@ export function use (execute, check) {
 
 function isValidInput (execute, check) {
   if (!check || check.constructor !== String && check.constructor !== Array) {
+    console.error('validation error', execute, check);
     throw new Error(`check-and-execute accepts only array and string as check`);
-    console.error(execute, check);
   }
 
   if (!execute || execute.constructor !== Function) {
+    console.error('validation error', execute, check);
     throw new Error('check-and-execute accepts only functions as executes');
-    console.error(execute, check);
   }
 }
 
