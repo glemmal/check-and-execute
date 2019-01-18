@@ -37,27 +37,28 @@ function isValidInput(execute, check) {
 function create() {
   var _modules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-  modules = [].concat(_toConsumableArray(modules), [_modules]);
-
-  modules.forEach(function (_ref) {
+  [].concat(_toConsumableArray(modules), [_modules]).reduce(function (mem, val) {
+    return (
+      // accept also module definition as array with submodules
+      val.constructor === Array ? [].concat(_toConsumableArray(mem), _toConsumableArray(val)) : [].concat(_toConsumableArray(mem), [val])
+    );
+  }, []).forEach(function (_ref) {
     var execute = _ref.execute,
         check = _ref.check;
-    return isValidInput(execute, check);
-  });
 
-  modules.reduce(function (mem, val) {
-    return mem.concat(val);
-  }, []).forEach(function (usedModule) {
+    // check if module is valid
+    isValidInput(execute, check);
+
     // check selectors are all available
-    var selectorCheck = (usedModule.check || []).map(function (check) {
-      return document.querySelector(check);
+    var shouldExecute = (check || []).map(function (c) {
+      return document.querySelector(c);
     }).find(function (el) {
       return !el;
     }) !== null;
 
     // call execute
-    if (selectorCheck && usedModule.execute) {
-      usedModule.execute();
+    if (shouldExecute && execute) {
+      execute();
     }
   });
 }

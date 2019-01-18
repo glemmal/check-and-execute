@@ -26,7 +26,7 @@ function isValidInput (execute, check) {
 }
 
 export default function create (_modules = []) {
-  [...modules, _modules]
+  [...modules, ..._modules]
     .reduce((mem, val) => (
       // accept also module definition as array with submodules
       val.constructor === Array ? [...mem, ...val] : [...mem, val]
