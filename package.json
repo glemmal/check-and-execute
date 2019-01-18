@@ -1,6 +1,6 @@
 {
   "name": "check-and-execute",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Execute given functions when a given selector exists inside of the DOM.",
   "main": "dist/index.js",
   "scripts": {
